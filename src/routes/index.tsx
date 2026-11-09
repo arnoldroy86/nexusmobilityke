@@ -5,6 +5,7 @@ import {
   ArrowRight,
   Check,
   Clock3,
+  MapPin,
   Menu,
   Plane,
   Route as RouteIcon,
