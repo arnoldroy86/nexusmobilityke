@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794313517225,
+      "tag": "0000_partner_vehicle_submissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794313587870,
+      "tag": "0001_protect_partner_submission_inserts",
+      "breakpoints": true
+    }
+  ]
+}
