@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794313517225,
+      "tag": "0000_partner_vehicle_submissions",
+      "breakpoints": true
+    }
+  ]
 }

@@ -1,0 +1,4 @@
+- [ ] Update NEXUS logo, Kenya-focused hero, vehicle photos, and app preview.
+- [ ] Add partner vehicle submission with secure photo uploads and persistent storage.
+- [ ] Add Nairobi contact section and move partner-logo strip directly above footer.
+- [ ] Verify desktop/mobile layout, form submission, and build signals.
