@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  ArrowDown,
   ArrowDownRight,
   ArrowRight,
   Check,
   Clock3,
+  FileImage,
+  Mail,
   MapPin,
   Menu,
+  Phone,
   Plane,
   Route as RouteIcon,
   ShieldCheck,
@@ -15,17 +19,19 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 import logoAsset from "@/assets/logo.png.asset.json";
-import heroImage from "@/assets/nexus-hero.jpg";
+import heroImage from "@/assets/nexus-kenya-fleet.jpg";
 import corporateServiceImage from "@/assets/nexus-service-corporate.jpg";
 import airportServiceImage from "@/assets/nexus-service-airport.jpg";
 import chauffeurServiceImage from "@/assets/nexus-service-chauffeur.jpg";
-import executiveSedanImage from "@/assets/nexus-executive-sedan.jpg";
-import businessSedanImage from "@/assets/nexus-business-sedan.jpg";
-import luxurySedanImage from "@/assets/nexus-luxury-sedan.jpg";
-import executiveSuvImage from "@/assets/nexus-executive-suv.jpg";
-import premiumSuvImage from "@/assets/nexus-premium-suv.jpg";
-import peopleCarrierImage from "@/assets/nexus-people-carrier.jpg";
+import executiveSedanImage from "@/assets/nexus-silver-axio.jpg";
+import businessSedanImage from "@/assets/nexus-black-noah.jpg";
+import luxurySedanImage from "@/assets/nexus-black-prado.jpg";
+import executiveVanImage from "@/assets/nexus-silver-noah.jpg";
+import premiumSuvImage from "@/assets/nexus-black-range-rover.jpg";
+import peopleCarrierImage from "@/assets/nexus-silver-coaster.jpg";
+import officeImage from "@/assets/nexus-applewood-office.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -88,11 +94,11 @@ const services = [
 
 const vehicles = [
   { title: "Executive sedan", image: executiveSedanImage, alt: "Black executive sedan" },
-  { title: "Business sedan", image: businessSedanImage, alt: "Black business sedan" },
-  { title: "Luxury sedan", image: luxurySedanImage, alt: "Black luxury sedan" },
-  { title: "Executive SUV", image: executiveSuvImage, alt: "Black executive SUV" },
-  { title: "Premium SUV", image: premiumSuvImage, alt: "Black premium SUV" },
-  { title: "People carrier", image: peopleCarrierImage, alt: "Black passenger people carrier" },
+  { title: "7-seater van", image: businessSedanImage, alt: "Black Toyota Noah seven-seater van" },
+  { title: "Executive SUV", image: luxurySedanImage, alt: "Black Toyota Prado executive SUV" },
+  { title: "Executive van", image: executiveVanImage, alt: "Silver Toyota Noah executive van" },
+  { title: "Premium SUV", image: premiumSuvImage, alt: "Black premium Range Rover SUV" },
+  { title: "Coaster bus", image: peopleCarrierImage, alt: "Silver Toyota Coaster bus" },
 ];
 
 const steps = [
@@ -119,7 +125,8 @@ const clientPlaceholders = Array.from({ length: 10 }, (_, index) =>
 
 function NexusHome() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [previewMessage, setPreviewMessage] = useState(false);
+  const [partnerSubmitting, setPartnerSubmitting] = useState(false);
+  const [partnerMessage, setPartnerMessage] = useState("");
 
   function closeMenu() {
     setMenuOpen(false);
@@ -127,7 +134,59 @@ function NexusHome() {
 
   function showEnquiryPreview(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPreviewMessage(true);
+    setPartnerMessage("Thanks for getting in touch. Please call NEXUS directly to complete your booking enquiry.");
+  }
+
+  async function submitPartnerVehicle(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const photo = formData.get("vehicle-photo");
+
+    if (!(photo instanceof File) || photo.size === 0) {
+      setPartnerMessage("Please choose a vehicle photo to continue.");
+      return;
+    }
+
+    if (!photo.type.startsWith("image/") || photo.size > 8 * 1024 * 1024) {
+      setPartnerMessage("Choose an image file smaller than 8 MB.");
+      return;
+    }
+
+    setPartnerSubmitting(true);
+    setPartnerMessage("");
+
+    const extension = photo.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const photoPath = `${crypto.randomUUID()}.${extension}`;
+
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from("nexus-partner-vehicles")
+        .upload(photoPath, photo, { contentType: photo.type, upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const vehicleYearValue = String(formData.get("vehicle-year") ?? "").trim();
+      const { error: submitError } = await supabase.from("partner_vehicle_submissions").insert({
+        full_name: String(formData.get("partner-name") ?? "").trim(),
+        email: String(formData.get("partner-email") ?? "").trim(),
+        phone: String(formData.get("partner-phone") ?? "").trim(),
+        vehicle_make: String(formData.get("vehicle-make") ?? "").trim(),
+        vehicle_model: String(formData.get("vehicle-model") ?? "").trim(),
+        vehicle_year: vehicleYearValue ? Number(vehicleYearValue) : null,
+        notes: String(formData.get("vehicle-notes") ?? "").trim() || null,
+        photo_storage_path: photoPath,
+      });
+
+      if (submitError) throw submitError;
+
+      form.reset();
+      setPartnerMessage("Your vehicle details have been sent to NEXUS. Thank you for partnering with us.");
+    } catch {
+      setPartnerMessage("We couldn’t send your details just now. Please try again or call +254 740 570 038.");
+    } finally {
+      setPartnerSubmitting(false);
+    }
   }
 
   return (
@@ -172,10 +231,10 @@ function NexusHome() {
       <section id="home" className="hero-section">
         <div className="site-container hero-layout">
           <div className="hero-copy">
-            <p className="eyebrow"><span /> Corporate transport, considered</p>
-            <h1>Corporate travel, <span>handled.</span></h1>
+            <p className="eyebrow"><span /> Car rental &amp; corporate transport solutions in Kenya</p>
+            <h1>Move with <span>purpose.</span></h1>
             <p className="hero-description">
-              A thoughtful way to travel for business. Discover executive transport,
+              Car rental and corporate transport solutions in Kenya. Discover executive transport,
               airport connections, and the right vehicle for the day ahead.
             </p>
             <div className="hero-actions">
@@ -203,7 +262,7 @@ function NexusHome() {
             />
             <div className="hero-image-caption">
               <span className="caption-marker" />
-              <span>A better view of the way there</span>
+              <span>Kenya’s roads, ready for what’s next</span>
             </div>
             <span className="hero-image-index" aria-hidden="true">Nº 01 — NEXUS</span>
           </div>
@@ -214,7 +273,7 @@ function NexusHome() {
         <div className="site-container trust-inner">
           <div className="trust-intro">
             <p className="eyebrow eyebrow-muted">Partnerships</p>
-            <h2 id="trust-heading">Companies that<br />trust us.</h2>
+            <h2 id="trust-heading">Companies that trust us.</h2>
           </div>
           <div className="client-logo-wrap">
             <div className="client-logo-track" aria-label="Ten sample client logo placements">
@@ -375,8 +434,7 @@ function NexusHome() {
             <div className="phone-shell">
               <div className="phone-screen">
                 <div className="phone-status"><span>9:41</span><span>● ● ●</span></div>
-                <div className="phone-topbar">
-                  <img src={logoAsset.url} alt="NEXUS" width={90} height={30} />
+              <div className="phone-topbar">
                   <span className="phone-avatar" aria-hidden="true">N</span>
                 </div>
                 <p className="phone-greeting">GOOD MORNING</p>
@@ -445,15 +503,80 @@ function NexusHome() {
             <Button className="form-submit" type="submit" size="lg">
               Preview my enquiry <ArrowRight aria-hidden="true" />
             </Button>
-            {previewMessage && (
+            {partnerMessage && (
               <p className="form-feedback" role="status">
-                This is a preview. Your details were not sent; connect an enquiry contact before accepting bookings.
+                {partnerMessage}
               </p>
             )}
-            <p className="form-privacy">
-              Before launch, add an approved privacy policy and an enquiry destination.
-            </p>
+            <p className="form-privacy">For a quicker response, call +254 740 570 038.</p>
           </form>
+        </div>
+      </section>
+
+      <section id="partners" className="partner-section page-section">
+        <div className="site-container partner-layout">
+          <div className="partner-copy">
+            <p className="eyebrow"><span /> Grow with NEXUS</p>
+            <h2>Partner with us<br />and <span>earn.</span></h2>
+            <p>Have a vehicle to put to work? Share its details and our team will get in touch about joining the NEXUS fleet.</p>
+            <div className="booking-assurance">
+              <ShieldCheck aria-hidden="true" />
+              <span>Your vehicle photo is stored privately and only shared with the NEXUS team.</span>
+            </div>
+          </div>
+
+          <form className="booking-form partner-form" onSubmit={submitPartnerVehicle}>
+            <div className="form-heading"><span>PARTNER ENQUIRY</span><span>Vehicle details</span></div>
+            <label htmlFor="partner-name">Your name</label>
+            <Input id="partner-name" name="partner-name" autoComplete="name" placeholder="Full name" required />
+            <div className="form-two-column">
+              <div className="form-field">
+                <label htmlFor="partner-email">Email address</label>
+                <Input id="partner-email" name="partner-email" type="email" autoComplete="email" placeholder="you@example.com" required />
+              </div>
+              <div className="form-field">
+                <label htmlFor="partner-phone">Phone number</label>
+                <Input id="partner-phone" name="partner-phone" type="tel" autoComplete="tel" placeholder="+254" required />
+              </div>
+            </div>
+            <div className="form-two-column">
+              <div className="form-field">
+                <label htmlFor="vehicle-make">Vehicle make</label>
+                <Input id="vehicle-make" name="vehicle-make" placeholder="e.g. Toyota" required />
+              </div>
+              <div className="form-field">
+                <label htmlFor="vehicle-model">Vehicle model</label>
+                <Input id="vehicle-model" name="vehicle-model" placeholder="e.g. Noah" required />
+              </div>
+            </div>
+            <label htmlFor="vehicle-year">Year of manufacture</label>
+            <Input id="vehicle-year" name="vehicle-year" type="number" min="1980" max="2026" placeholder="e.g. 2022" />
+            <label htmlFor="vehicle-photo">Vehicle photo</label>
+            <Input id="vehicle-photo" name="vehicle-photo" type="file" accept="image/*" required />
+            <p className="form-privacy form-file-note"><FileImage aria-hidden="true" /> JPG, PNG, or another image format · up to 8 MB</p>
+            <label htmlFor="vehicle-notes">Anything else we should know?</label>
+            <textarea id="vehicle-notes" className="booking-textarea" name="vehicle-notes" rows={3} placeholder="Vehicle condition, availability, or questions" />
+            <Button className="form-submit" type="submit" size="lg" disabled={partnerSubmitting}>
+              {partnerSubmitting ? "Sending details…" : "Send partner enquiry"} <ArrowRight aria-hidden="true" />
+            </Button>
+            {partnerMessage && <p className="form-feedback" role="status">{partnerMessage}</p>}
+          </form>
+        </div>
+      </section>
+
+      <section id="contact" className="contact-section page-section">
+        <div className="site-container contact-layout">
+          <div className="contact-image-wrap">
+            <img src={officeImage} alt="The Applewood Adams office in Kilimani, Nairobi" width={1200} height={800} loading="lazy" />
+            <span className="contact-image-caption"><MapPin aria-hidden="true" /> Applewood Adams · Kilimani</span>
+          </div>
+          <div className="contact-copy">
+            <p className="eyebrow"><span /> We’re here to help</p>
+            <h2>Talk to <span>us.</span></h2>
+            <p>Plan a journey, ask about a vehicle, or talk with our team in Nairobi.</p>
+            <a className="contact-detail" href="tel:+254740570038"><span><Phone aria-hidden="true" /></span><span><small>Call our team</small><strong>+254 740 570 038</strong></span><ArrowRight aria-hidden="true" /></a>
+            <div className="contact-detail contact-address"><span><MapPin aria-hidden="true" /></span><span><small>Visit our office</small><strong>Applewood Adams<br />Kilimani, Nairobi, Kenya</strong></span></div>
+          </div>
         </div>
       </section>
 
@@ -474,11 +597,16 @@ function NexusHome() {
           <div className="footer-column">
             <p className="footer-label">Connect</p>
             <a href="#booking">Enquire about a journey</a>
+            <a href="#partners">Partner with us</a>
             <a href="#app">NEXUS app</a>
-            <a href="#reviews">Client stories</a>
           </div>
           <div className="footer-column footer-legal" id="legal">
-            <p className="footer-label">Before launch</p>
+            <p className="footer-label">Talk to us</p>
+            <a href="tel:+254740570038">+254 740 570 038</a>
+            <span>Applewood Adams<br />Kilimani, Nairobi, Kenya</span>
+          </div>
+          <div className="footer-column footer-legal" id="legal">
+            <p className="footer-label">Information</p>
             <a href="#legal">Privacy policy</a>
             <a href="#legal">Terms of service</a>
             <span>Replace these placeholders with approved policies.</span>
