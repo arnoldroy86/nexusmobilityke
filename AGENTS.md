@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+Public partner enquiries are write-only for visitors; keep submitted vehicle photos private and restrict public upload access to the partner-photo bucket so contact details cannot be read back anonymously.

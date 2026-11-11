@@ -15,6 +15,13 @@
       "when": 1794313587870,
       "tag": "0001_protect_partner_submission_inserts",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794370781827,
+      "tag": "0002_secure_partner_vehicle_intake",
+      "breakpoints": true
     }
   ]
 }
