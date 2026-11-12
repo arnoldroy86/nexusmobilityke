@@ -127,7 +127,7 @@ function NexusHome() {
 
   function showEnquiryPreview(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPartnerMessage("Thanks for getting in touch. Please call NEXUS directly to complete your booking enquiry.");
+    setPartnerMessage("Thanks for your interest. Booking enquiries are not sent from this form yet.");
   }
 
   async function submitPartnerVehicle(event: React.FormEvent<HTMLFormElement>) {
@@ -317,7 +317,11 @@ function NexusHome() {
 
           <div className="fleet-grid">
             {vehicles.map((vehicle, index) => (
-              <a className="vehicle-card" href="#booking" key={vehicle.title}>
+              <a
+                className={`vehicle-card${vehicle.title === "Coaster bus" ? " vehicle-card--flipped" : ""}`}
+                href="#booking"
+                key={vehicle.title}
+              >
                 <div className="vehicle-image-wrap">
                   <img
                     src={vehicle.image}
@@ -444,11 +448,11 @@ function NexusHome() {
             <h2>Let’s make<br />your next journey <span>count.</span></h2>
             <p>
               Share a little about what you have in mind. This enquiry form is a
-              preview and does not yet send or save your details.
+              preview and does not yet send your details.
             </p>
             <div className="booking-assurance">
               <ShieldCheck aria-hidden="true" />
-              <span>Real booking requests can be enabled when an approved enquiry contact is ready.</span>
+              <span>This enquiry form is a preview and does not submit your booking request.</span>
             </div>
           </div>
           <form className="booking-form" onSubmit={showEnquiryPreview}>
@@ -480,7 +484,7 @@ function NexusHome() {
                 {partnerMessage}
               </p>
             )}
-            <p className="form-privacy">For a quicker response, call +254 740 570 038.</p>
+            <p className="form-privacy">Your details are not sent when you preview this form.</p>
           </form>
         </div>
       </section>
