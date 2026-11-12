@@ -177,7 +177,7 @@ function NexusHome() {
       form.reset();
       setPartnerMessage("Your vehicle details have been sent to NEXUS. Thank you for partnering with us.");
     } catch {
-      setPartnerMessage("We couldn’t send your details just now. Please try again or call +254 740 570 038.");
+      setPartnerMessage("We couldn’t send your details just now. Please try again in a moment.");
     } finally {
       setPartnerSubmitting(false);
     }
@@ -490,6 +490,27 @@ function NexusHome() {
         </div>
       </section>
 
+      <section className="trust-section" aria-labelledby="trust-heading">
+        <div className="site-container trust-inner">
+          <div className="trust-intro">
+            <p className="eyebrow eyebrow-muted">Partnerships</p>
+            <h2 id="trust-heading">Companies that trust us.</h2>
+          </div>
+          <div className="client-logo-wrap">
+            <div className="client-logo-track" aria-label="Ten sample client logo placements">
+              {[...clientPlaceholders, ...clientPlaceholders].map((label, index) => (
+                <span key={`${label}-${index}`} aria-hidden={index >= clientPlaceholders.length}>
+                  {label}
+                </span>
+              ))}
+            </div>
+            <p className="placeholder-note">
+              Sample logo placements. Replace with confirmed NEXUS client logos.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section id="partners" className="partner-section page-section">
         <div className="site-container partner-layout">
           <div className="partner-copy">
@@ -538,27 +559,6 @@ function NexusHome() {
             </Button>
             {partnerMessage && <p className="form-feedback" role="status">{partnerMessage}</p>}
           </form>
-        </div>
-      </section>
-
-      <section className="trust-section" aria-labelledby="trust-heading">
-        <div className="site-container trust-inner">
-          <div className="trust-intro">
-            <p className="eyebrow eyebrow-muted">Partnerships</p>
-            <h2 id="trust-heading">Companies that trust us.</h2>
-          </div>
-          <div className="client-logo-wrap">
-            <div className="client-logo-track" aria-label="Ten sample client logo placements">
-              {[...clientPlaceholders, ...clientPlaceholders].map((label, index) => (
-                <span key={`${label}-${index}`} aria-hidden={index >= clientPlaceholders.length}>
-                  {label}
-                </span>
-              ))}
-            </div>
-            <p className="placeholder-note">
-              Sample logo placements. Replace with confirmed NEXUS client logos.
-            </p>
-          </div>
         </div>
       </section>
 

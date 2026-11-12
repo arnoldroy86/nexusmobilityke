@@ -1,4 +1,4 @@
 - [ ] Finish the Kenya-focused NEXUS hero, services, fleet photos, and app preview.
 - [ ] Complete secure partner vehicle submissions and restyle the partner section.
-- [ ] Remove the Talk to Us section, update the footer address, and move client logos after enquiries.
+- [ ] Remove the Talk to Us section, update the footer address, and place client logos immediately after enquiries.
 - [ ] Verify the real submission flow, desktop/mobile layout, and build signals.
