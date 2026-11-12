@@ -1194,6 +1194,96 @@ img {
   background: var(--background);
 }
 
+.partner-section {
+  border-top: 1px solid var(--border);
+  background: var(--brand-warm);
+}
+
+.partner-layout {
+  display: grid;
+  grid-template-columns: 0.94fr 1.06fr;
+  align-items: start;
+  gap: 85px;
+}
+
+.partner-copy h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.24;
+}
+
+.partner-copy h2 span {
+  color: var(--brand-orange-dark);
+}
+
+.partner-copy > p:not(.eyebrow) {
+  max-width: 380px;
+  margin: 20px 0 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+.partner-form {
+  border-color: color-mix(in oklab, var(--primary-foreground) 18%, var(--brand-black));
+  background: var(--brand-black);
+  color: var(--primary-foreground);
+}
+
+.partner-form .form-heading {
+  border-color: color-mix(in oklab, var(--primary-foreground) 18%, var(--brand-black));
+  color: var(--primary-foreground);
+}
+
+.partner-form .booking-form label,
+.partner-form label {
+  color: var(--primary-foreground);
+}
+
+.form-two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.form-field {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+}
+
+.partner-form input,
+.partner-form .booking-textarea {
+  border-color: color-mix(in oklab, var(--primary-foreground) 24%, var(--brand-black));
+  background: color-mix(in oklab, var(--brand-black) 88%, white);
+  color: var(--primary-foreground);
+}
+
+.partner-form input::placeholder,
+.partner-form .booking-textarea::placeholder {
+  color: color-mix(in oklab, var(--primary-foreground) 64%, var(--brand-black));
+}
+
+.partner-form input[type="file"] {
+  min-height: 44px;
+  padding: 7px;
+}
+
+.form-file-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: -4px;
+}
+
+.form-file-note svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+}
+
 .form-heading {
   display: flex;
   justify-content: space-between;
@@ -1355,7 +1445,8 @@ img {
   .header-navigation { gap: 20px; }
   .process-layout { gap: 50px; }
   .reviews-layout { gap: 54px; }
-  .booking-layout { gap: 47px; }
+  .booking-layout,
+  .partner-layout { gap: 47px; }
   .footer-main { gap: 28px; }
 }
 
@@ -1432,8 +1523,10 @@ img {
   .phone-scene { height: 480px; }
   .phone-shell { height: 449px; }
   .phone-float-note { right: 0; bottom: 34px; }
-  .booking-layout { grid-template-columns: 1fr; gap: 30px; }
+  .booking-layout,
+  .partner-layout { grid-template-columns: 1fr; gap: 30px; }
   .booking-copy h2 { font-size: 37px; }
+  .partner-copy h2 { font-size: 37px; }
   .booking-form { padding: 21px; }
   .footer-main { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 22px; padding-block: 41px 33px; }
   .footer-brand { grid-column: 1 / -1; }
@@ -1447,6 +1540,7 @@ img {
   .hero-actions { align-items: flex-start; flex-direction: column; }
   .store-button { min-width: 0; }
   .booking-form { padding: 17px; }
+  .form-two-column { grid-template-columns: 1fr; gap: 9px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

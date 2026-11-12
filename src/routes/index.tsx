@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  ArrowDown,
   ArrowDownRight,
   ArrowRight,
   Check,
   Clock3,
   FileImage,
-  Mail,
   MapPin,
   Menu,
-  Phone,
   Plane,
   Route as RouteIcon,
   ShieldCheck,
@@ -21,17 +18,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import logoAsset from "@/assets/logo.png.asset.json";
-import heroImage from "@/assets/nexus-kenya-fleet.jpg";
-import corporateServiceImage from "@/assets/nexus-service-corporate.jpg";
-import airportServiceImage from "@/assets/nexus-service-airport.jpg";
-import chauffeurServiceImage from "@/assets/nexus-service-chauffeur.jpg";
+import heroImage from "@/assets/nexus-kenya-hero.png.asset.json";
 import executiveSedanImage from "@/assets/nexus-silver-axio.jpg";
 import businessSedanImage from "@/assets/nexus-black-noah.jpg";
 import luxurySedanImage from "@/assets/nexus-black-prado.jpg";
 import executiveVanImage from "@/assets/nexus-silver-noah.jpg";
 import premiumSuvImage from "@/assets/nexus-black-range-rover.jpg";
 import peopleCarrierImage from "@/assets/nexus-silver-coaster.jpg";
-import officeImage from "@/assets/nexus-applewood-office.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,30 +63,30 @@ const services = [
     number: "01",
     title: "Corporate transport",
     description: "Considered journeys for meetings, teams, and the working day.",
-    image: corporateServiceImage,
-    alt: "Black executive car waiting outside a modern office building",
+    image: luxurySedanImage,
+    alt: "Black Toyota Prado for corporate transport in Kenya",
     icon: <RouteIcon aria-hidden="true" />,
   },
   {
     number: "02",
     title: "Full-day hires",
     description: "A dedicated vehicle for schedules that have room to move.",
-    image: chauffeurServiceImage,
-    alt: "Black chauffeur vehicle outside an elegant city hotel",
+    image: businessSedanImage,
+    alt: "Black Toyota Noah for a full-day hire in Kenya",
     icon: <Clock3 aria-hidden="true" />,
   },
   {
     number: "03",
     title: "Airport transfers",
     description: "A more considered connection to your next flight.",
-    image: airportServiceImage,
-    alt: "Black executive SUV ready for a passenger transfer at an airport",
+    image: executiveSedanImage,
+    alt: "Silver Toyota Axio for airport transfers in Kenya",
     icon: <Plane aria-hidden="true" />,
   },
 ];
 
 const vehicles = [
-  { title: "Executive sedan", image: executiveSedanImage, alt: "Black executive sedan" },
+  { title: "Executive sedan", image: executiveSedanImage, alt: "Silver Toyota Axio executive sedan" },
   { title: "7-seater van", image: businessSedanImage, alt: "Black Toyota Noah seven-seater van" },
   { title: "Executive SUV", image: luxurySedanImage, alt: "Black Toyota Prado executive SUV" },
   { title: "Executive van", image: executiveVanImage, alt: "Silver Toyota Noah executive van" },
@@ -254,10 +247,10 @@ function NexusHome() {
           <div className="hero-visual">
             <img
               className="hero-photo"
-              src={heroImage}
-              alt="Black executive sedan waiting outside a contemporary office building"
-              width={1536}
-              height={1024}
+              src={heroImage.url}
+              alt="A fleet of Kenyan cars, vans, and buses ready for the road"
+              width={1200}
+              height={1200}
               fetchPriority="high"
             />
             <div className="hero-image-caption">
@@ -265,27 +258,6 @@ function NexusHome() {
               <span>Kenya’s roads, ready for what’s next</span>
             </div>
             <span className="hero-image-index" aria-hidden="true">Nº 01 — NEXUS</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="trust-section" aria-labelledby="trust-heading">
-        <div className="site-container trust-inner">
-          <div className="trust-intro">
-            <p className="eyebrow eyebrow-muted">Partnerships</p>
-            <h2 id="trust-heading">Companies that trust us.</h2>
-          </div>
-          <div className="client-logo-wrap">
-            <div className="client-logo-track" aria-label="Ten sample client logo placements">
-              {[...clientPlaceholders, ...clientPlaceholders].map((label, index) => (
-                <span key={`${label}-${index}`} aria-hidden={index >= clientPlaceholders.length}>
-                  {label}
-                </span>
-              ))}
-            </div>
-            <p className="placeholder-note">
-              Sample logo placements. Replace with confirmed NEXUS client logos.
-            </p>
           </div>
         </div>
       </section>
@@ -434,7 +406,7 @@ function NexusHome() {
             <div className="phone-shell">
               <div className="phone-screen">
                 <div className="phone-status"><span>9:41</span><span>● ● ●</span></div>
-              <div className="phone-topbar">
+                <div className="phone-topbar">
                   <span className="phone-avatar" aria-hidden="true">N</span>
                 </div>
                 <p className="phone-greeting">GOOD MORNING</p>
@@ -517,7 +489,7 @@ function NexusHome() {
         <div className="site-container partner-layout">
           <div className="partner-copy">
             <p className="eyebrow"><span /> Grow with NEXUS</p>
-            <h2>Partner with us<br />and <span>earn.</span></h2>
+            <h2>Partner with us<br /><span>and earn.</span></h2>
             <p>Have a vehicle to put to work? Share its details and our team will get in touch about joining the NEXUS fleet.</p>
             <div className="booking-assurance">
               <ShieldCheck aria-hidden="true" />
@@ -564,18 +536,23 @@ function NexusHome() {
         </div>
       </section>
 
-      <section id="contact" className="contact-section page-section">
-        <div className="site-container contact-layout">
-          <div className="contact-image-wrap">
-            <img src={officeImage} alt="The Applewood Adams office in Kilimani, Nairobi" width={1200} height={800} loading="lazy" />
-            <span className="contact-image-caption"><MapPin aria-hidden="true" /> Applewood Adams · Kilimani</span>
+      <section className="trust-section" aria-labelledby="trust-heading">
+        <div className="site-container trust-inner">
+          <div className="trust-intro">
+            <p className="eyebrow eyebrow-muted">Partnerships</p>
+            <h2 id="trust-heading">Companies that trust us.</h2>
           </div>
-          <div className="contact-copy">
-            <p className="eyebrow"><span /> We’re here to help</p>
-            <h2>Talk to <span>us.</span></h2>
-            <p>Plan a journey, ask about a vehicle, or talk with our team in Nairobi.</p>
-            <a className="contact-detail" href="tel:+254740570038"><span><Phone aria-hidden="true" /></span><span><small>Call our team</small><strong>+254 740 570 038</strong></span><ArrowRight aria-hidden="true" /></a>
-            <div className="contact-detail contact-address"><span><MapPin aria-hidden="true" /></span><span><small>Visit our office</small><strong>Applewood Adams<br />Kilimani, Nairobi, Kenya</strong></span></div>
+          <div className="client-logo-wrap">
+            <div className="client-logo-track" aria-label="Ten sample client logo placements">
+              {[...clientPlaceholders, ...clientPlaceholders].map((label, index) => (
+                <span key={`${label}-${index}`} aria-hidden={index >= clientPlaceholders.length}>
+                  {label}
+                </span>
+              ))}
+            </div>
+            <p className="placeholder-note">
+              Sample logo placements. Replace with confirmed NEXUS client logos.
+            </p>
           </div>
         </div>
       </section>
@@ -600,10 +577,9 @@ function NexusHome() {
             <a href="#partners">Partner with us</a>
             <a href="#app">NEXUS app</a>
           </div>
-          <div className="footer-column footer-legal" id="legal">
-            <p className="footer-label">Talk to us</p>
-            <a href="tel:+254740570038">+254 740 570 038</a>
-            <span>Applewood Adams<br />Kilimani, Nairobi, Kenya</span>
+          <div className="footer-column footer-legal">
+            <p className="footer-label">Nairobi</p>
+            <span>Tsavo Suits<br />Ngong Rd, Nairobi, Kenya</span>
           </div>
           <div className="footer-column footer-legal" id="legal">
             <p className="footer-label">Information</p>
