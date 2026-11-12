@@ -56,6 +56,7 @@ const navigation = [
   { href: "#vehicles", label: "Our fleet" },
   { href: "#process", label: "How it works" },
   { href: "#reviews", label: "Testimonials" },
+  { href: "#partners", label: "Partner with us" },
 ];
 
 const services = [
