@@ -25,6 +25,14 @@ import luxurySedanImage from "@/assets/nexus-black-prado.jpg";
 import executiveVanImage from "@/assets/nexus-silver-noah.jpg";
 import premiumSuvImage from "@/assets/nexus-black-range-rover.jpg";
 import peopleCarrierImage from "@/assets/nexus-silver-coaster.jpg";
+import logo4g from "@/assets/client-4G-Capital.png.asset.json";
+import logoCci from "@/assets/client-8d651968cc40a4f723cc488690bf5ff5_CCI-Kenya.png.asset.json";
+import logoCopia from "@/assets/client-copia-global-logo.png.asset.json";
+import logoLighthouse from "@/assets/client-images_1.png.asset.json";
+import logoJumia from "@/assets/client-images.png.asset.json";
+import logoKipre from "@/assets/client-Kipre.png.asset.json";
+import logoKoko from "@/assets/client-koko.png.asset.json";
+import logoRedCross from "@/assets/client-logo-203x114-1.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -113,9 +121,16 @@ const steps = [
   },
 ];
 
-const clientPlaceholders = Array.from({ length: 10 }, (_, index) =>
-  `CLIENT LOGO ${String(index + 1).padStart(2, "0")}`,
-);
+const clientLogos = [
+  { name: "4G Capital", image: logo4g },
+  { name: "CCI Kenya", image: logoCci },
+  { name: "Copia Global", image: logoCopia },
+  { name: "Nairobi Lighthouse Church", image: logoLighthouse },
+  { name: "Jumia", image: logoJumia },
+  { name: "Kenya Institute of Primate Research", image: logoKipre },
+  { name: "KOKO", image: logoKoko },
+  { name: "Kenya Red Cross", image: logoRedCross },
+];
 
 function NexusHome() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -493,20 +508,16 @@ function NexusHome() {
       <section className="trust-section" aria-labelledby="trust-heading">
         <div className="site-container trust-inner">
           <div className="trust-intro">
-            <p className="eyebrow eyebrow-muted">Partnerships</p>
             <h2 id="trust-heading">Companies that trust us.</h2>
           </div>
           <div className="client-logo-wrap">
-            <div className="client-logo-track" aria-label="Ten sample client logo placements">
-              {[...clientPlaceholders, ...clientPlaceholders].map((label, index) => (
-                <span key={`${label}-${index}`} aria-hidden={index >= clientPlaceholders.length}>
-                  {label}
-                </span>
+            <div className="client-logo-grid" role="list" aria-label="Companies that trust NEXUS">
+              {clientLogos.map((logo) => (
+                <div className="client-logo-item" key={logo.name} role="listitem">
+                  <img src={logo.image.url} alt={logo.name} loading="lazy" />
+                </div>
               ))}
             </div>
-            <p className="placeholder-note">
-              Sample logo placements. Replace with confirmed NEXUS client logos.
-            </p>
           </div>
         </div>
       </section>
