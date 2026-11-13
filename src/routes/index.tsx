@@ -6,6 +6,7 @@ import {
   Check,
   Clock3,
   FileImage,
+  MapPin,
   Menu,
   Plane,
   Route as RouteIcon,
