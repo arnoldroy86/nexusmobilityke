@@ -510,9 +510,9 @@ function NexusHome() {
             <h2 id="trust-heading">Companies that trust us.</h2>
           </div>
           <div className="client-logo-wrap">
-            <div className="client-logo-grid" aria-label="Companies that trust NEXUS">
+            <div className="client-logo-grid" role="list" aria-label="Companies that trust NEXUS">
               {clientLogos.map((logo) => (
-                <div className="client-logo-item" key={logo.name}>
+                <div className="client-logo-item" key={logo.name} role="listitem">
                   <img src={logo.image.url} alt={logo.name} loading="lazy" />
                 </div>
               ))}
