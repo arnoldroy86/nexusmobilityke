@@ -430,8 +430,7 @@ img {
   max-width: 130px;
   height: auto;
   max-height: 37px;
-  filter: grayscale(1);
-  opacity: 0.58;
+  opacity: 1;
 }
 
 .services-section {
@@ -1230,8 +1229,7 @@ img {
   color: var(--primary-foreground);
 }
 
-.partner-form .booking-form label,
-.partner-form label {
+.booking-form.partner-form label {
   color: var(--primary-foreground);
 }
 
@@ -1247,21 +1245,27 @@ img {
   gap: 9px;
 }
 
-.partner-form input,
-.partner-form .booking-textarea {
+.booking-form.partner-form input,
+.booking-form.partner-form .booking-textarea {
   border-color: color-mix(in oklab, var(--primary-foreground) 24%, var(--brand-black));
   background: color-mix(in oklab, var(--brand-black) 88%, white);
   color: var(--primary-foreground);
 }
 
-.partner-form input::placeholder,
-.partner-form .booking-textarea::placeholder {
+.booking-form.partner-form input::placeholder,
+.booking-form.partner-form .booking-textarea::placeholder {
   color: color-mix(in oklab, var(--primary-foreground) 64%, var(--brand-black));
 }
 
-.partner-form input[type="file"] {
+.booking-form.partner-form input[type="file"] {
   min-height: 44px;
   padding: 7px;
+}
+
+.booking-form.partner-form input[type="file"]::file-selector-button {
+  border: 0;
+  background: transparent;
+  color: var(--primary-foreground);
 }
 
 .form-file-note {
