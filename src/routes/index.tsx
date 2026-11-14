@@ -508,13 +508,13 @@ function NexusHome() {
       <section className="trust-section" aria-labelledby="trust-heading">
         <div className="site-container trust-inner">
           <div className="trust-intro">
-            <h2 id="trust-heading">Companies that trust us.</h2>
+            <h2 id="trust-heading">They trust us.</h2>
           </div>
           <div className="client-logo-wrap">
             <div className="client-logo-grid" role="list" aria-label="Companies that trust NEXUS">
               {clientLogos.map((logo) => (
                 <div className="client-logo-item" key={logo.name} role="listitem">
-                  <img src={logo.image.url} alt={logo.name} loading="lazy" />
+                  <img src={logo.image.url} alt={logo.name} />
                 </div>
               ))}
             </div>
@@ -579,7 +579,6 @@ function NexusHome() {
             <a className="brand-lockup" href="#home" aria-label="NEXUS home">
               <img src={logoAsset.url} alt="NEXUS" width={160} height={54} loading="lazy" />
             </a>
-            <p>Considered journeys<br />for the way business moves.</p>
           </div>
           <div className="footer-column">
             <p className="footer-label">Explore</p>
@@ -596,12 +595,6 @@ function NexusHome() {
           <div className="footer-column footer-legal">
             <p className="footer-label">Nairobi</p>
             <span>Tsavo Suits<br />Ngong Rd, Nairobi, Kenya</span>
-          </div>
-          <div className="footer-column footer-legal" id="legal">
-            <p className="footer-label">Information</p>
-            <a href="#legal">Privacy policy</a>
-            <a href="#legal">Terms of service</a>
-            <span>Replace these placeholders with approved policies.</span>
           </div>
         </div>
         <div className="site-container footer-bottom">
