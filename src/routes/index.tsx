@@ -25,13 +25,13 @@ import luxurySedanImage from "@/assets/nexus-black-prado.jpg";
 import executiveVanImage from "@/assets/nexus-silver-noah.jpg";
 import premiumSuvImage from "@/assets/nexus-black-range-rover.jpg";
 import peopleCarrierImage from "@/assets/nexus-silver-coaster.jpg";
-import logo4g from "@/assets/client-4G-Capital.png.asset.json";
+import logo4g from "@/assets/client-4G-Capital-transparent.png.asset.json";
 import logoCci from "@/assets/client-8d651968cc40a4f723cc488690bf5ff5_CCI-Kenya.png.asset.json";
-import logoCopia from "@/assets/client-copia-global-logo.png.asset.json";
-import logoLighthouse from "@/assets/client-images_1.png.asset.json";
-import logoJumia from "@/assets/client-images.png.asset.json";
+import logoCopia from "@/assets/client-copia-global-logo-transparent.png.asset.json";
+import logoLighthouse from "@/assets/client-images_1-transparent.png.asset.json";
+import logoJumia from "@/assets/client-images-transparent.png.asset.json";
 import logoKipre from "@/assets/client-Kipre.png.asset.json";
-import logoKoko from "@/assets/client-koko.png.asset.json";
+import logoKoko from "@/assets/client-koko-transparent.png.asset.json";
 import logoRedCross from "@/assets/client-logo-203x114-1.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -599,7 +599,6 @@ function NexusHome() {
         </div>
         <div className="site-container footer-bottom">
           <span>© 2026 NEXUS. All rights reserved.</span>
-          <span className="footer-bottom-right"><span className="caption-marker" /> Corporate transport, considered</span>
         </div>
       </footer>
     </main>
