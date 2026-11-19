@@ -17,22 +17,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
-import logoAsset from "@/assets/logo.png.asset.json";
-import heroImage from "@/assets/nexus-kenya-hero.png.asset.json";
+import logoSrc from "@/assets/logo.png";
+import heroSrc from "@/assets/nexus-kenya-hero.png";
 import executiveSedanImage from "@/assets/nexus-silver-axio.jpg";
 import businessSedanImage from "@/assets/nexus-black-noah.jpg";
 import luxurySedanImage from "@/assets/nexus-black-prado.jpg";
 import executiveVanImage from "@/assets/nexus-silver-noah.jpg";
 import premiumSuvImage from "@/assets/nexus-black-range-rover.jpg";
 import peopleCarrierImage from "@/assets/nexus-silver-coaster.jpg";
-import logo4g from "@/assets/client-4G-Capital-transparent.png.asset.json";
-import logoCci from "@/assets/client-8d651968cc40a4f723cc488690bf5ff5_CCI-Kenya.png.asset.json";
-import logoCopia from "@/assets/client-copia-global-logo-transparent.png.asset.json";
-import logoLighthouse from "@/assets/client-images_1-transparent.png.asset.json";
-import logoJumia from "@/assets/client-images-transparent.png.asset.json";
-import logoKipre from "@/assets/client-Kipre.png.asset.json";
-import logoKoko from "@/assets/client-koko-transparent.png.asset.json";
-import logoRedCross from "@/assets/client-logo-203x114-1.png.asset.json";
+import logo4g from "@/assets/client-4G-Capital-transparent.png";
+import logoCci from "@/assets/client-CCI-Kenya.webp";
+import logoCopia from "@/assets/client-copia-global-logo-transparent.png";
+import logoLighthouse from "@/assets/client-images_1-transparent.png";
+import logoJumia from "@/assets/client-images-transparent.png";
+import logoKipre from "@/assets/client-Kipre.png";
+import logoKoko from "@/assets/client-koko-transparent.png";
+import logoRedCross from "@/assets/client-logo-203x114-1.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -203,7 +203,7 @@ function NexusHome() {
       <header className="nexus-header">
         <div className="site-container header-inner">
           <a className="brand-lockup" href="#home" aria-label="NEXUS home" onClick={closeMenu}>
-            <img src={logoAsset.url} alt="NEXUS" width={168} height={56} />
+            <img src={logoSrc} alt="NEXUS" width={168} height={56} />
           </a>
 
           <Button
@@ -263,7 +263,7 @@ function NexusHome() {
           <div className="hero-visual">
             <img
               className="hero-photo"
-              src={heroImage.url}
+              src={heroSrc}
               alt="A fleet of Kenyan cars, vans, and buses ready for the road"
               width={1200}
               height={1200}
@@ -514,7 +514,7 @@ function NexusHome() {
             <div className="client-logo-grid" role="list" aria-label="Companies that trust NEXUS">
               {clientLogos.map((logo) => (
                 <div className="client-logo-item" key={logo.name} role="listitem">
-                  <img src={logo.image.url} alt={logo.name} />
+                  <img src={logo.image} alt={logo.name} />
                 </div>
               ))}
             </div>
@@ -577,7 +577,7 @@ function NexusHome() {
         <div className="site-container footer-main">
           <div className="footer-brand">
             <a className="brand-lockup" href="#home" aria-label="NEXUS home">
-              <img src={logoAsset.url} alt="NEXUS" width={160} height={54} loading="lazy" />
+              <img src={logoSrc} alt="NEXUS" width={160} height={54} loading="lazy" />
             </a>
           </div>
           <div className="footer-column">
