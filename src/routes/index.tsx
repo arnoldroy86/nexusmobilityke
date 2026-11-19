@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
+import { ShowcaseVideo } from "@/components/showcase-video";
 import logoSrc from "@/assets/logo.png";
 import heroSrc from "@/assets/nexus-kenya-hero.png";
 import executiveSedanImage from "@/assets/nexus-silver-axio.jpg";
@@ -118,6 +119,33 @@ const steps = [
     number: "03",
     title: "Travel with ease",
     description: "Settle in, and let the journey take care of itself.",
+  },
+];
+
+const showcaseVideos = [
+  {
+    title: "Coaster bus",
+    src: "/videos/fleet-showcase-1.mp4",
+    poster: "/videos/fleet-showcase-1.jpg",
+    label: "Exterior walk-around of a NEXUS coaster bus",
+  },
+  {
+    title: "Alphard / Vellfire",
+    src: "/videos/fleet-showcase-2.mp4",
+    poster: "/videos/fleet-showcase-2.jpg",
+    label: "Toyota Alphard and Vellfire executive vans in the NEXUS fleet",
+  },
+  {
+    title: "Land Cruiser Prado",
+    src: "/videos/fleet-showcase-3.mp4",
+    poster: "/videos/fleet-showcase-3.jpg",
+    label: "A black Toyota Land Cruiser Prado from the NEXUS fleet",
+  },
+  {
+    title: "Coaster interior",
+    src: "/videos/fleet-showcase-4.mp4",
+    poster: "/videos/fleet-showcase-4.jpg",
+    label: "Passenger seating inside a NEXUS coaster bus",
   },
 ];
 
@@ -352,6 +380,31 @@ function NexusHome() {
                 <span className="vehicle-title">{vehicle.title}</span>
                 <span className="vehicle-caption">Discover this class</span>
               </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="showcase" className="showcase-section page-section" aria-labelledby="showcase-heading">
+        <div className="site-container">
+          <div className="section-heading showcase-heading">
+            <div>
+              <p className="eyebrow eyebrow-light"><span /> Fleet showcase</p>
+              <h2 id="showcase-heading">See the fleet<br /><span>in motion.</span></h2>
+            </div>
+            <p className="section-aside">
+              A closer look at the vehicles waiting for you, inside and out.
+            </p>
+          </div>
+
+          <div className="showcase-grid">
+            {showcaseVideos.map((video) => (
+              <figure className="showcase-item" key={video.src}>
+                <div className="showcase-frame">
+                  <ShowcaseVideo src={video.src} poster={video.poster} label={video.label} />
+                </div>
+                <figcaption>{video.title}</figcaption>
+              </figure>
             ))}
           </div>
         </div>
