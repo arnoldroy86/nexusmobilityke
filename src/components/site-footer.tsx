@@ -9,7 +9,7 @@ export function SiteFooter() {
       <div className="site-container footer-main">
         <div className="footer-brand">
           <Link className="brand-lockup" to="/" hash="home" aria-label="NEXUS home">
-            <img src={logoSrc} alt="NEXUS" width={160} height={54} loading="lazy" />
+            <img src={logoSrc} alt="NEXUS" width={140} height={57} loading="lazy" />
           </Link>
         </div>
         <div className="footer-column">

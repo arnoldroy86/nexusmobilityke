@@ -19,7 +19,9 @@ import { composeMessage, openWhatsApp } from "@/lib/contact";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { ShowcaseVideo } from "@/components/showcase-video";
-import logoSrc from "@/assets/logo.png";
+import serviceCorporateImage from "@/assets/nexus-service-corporate-staff.webp";
+import serviceAirportImage from "@/assets/nexus-service-airport-transfer.jpg";
+import serviceRentalsImage from "@/assets/nexus-service-rentals.jpg";
 import heroSrc from "@/assets/nexus-kenya-hero.png";
 import executiveSedanImage from "@/assets/nexus-silver-axio.jpg";
 import businessSedanImage from "@/assets/nexus-black-noah.jpg";
@@ -66,25 +68,26 @@ const services = [
     number: "01",
     title: "Corporate transport",
     description: "Considered journeys for meetings, teams, and the working day.",
-    image: luxurySedanImage,
-    alt: "Black Toyota Prado for corporate transport in Kenya",
+    image: serviceCorporateImage,
+    alt: "Passengers boarding a white NEXUS coaster bus for corporate transport",
     icon: <RouteIcon aria-hidden="true" />,
   },
   {
     number: "02",
-    title: "Full-day hires",
-    description: "A dedicated vehicle for schedules that have room to move.",
-    image: businessSedanImage,
-    alt: "Black Toyota Noah for a full-day hire in Kenya",
-    icon: <Clock3 aria-hidden="true" />,
+    title: "Airport transfers",
+    description: "A more considered connection to your next flight.",
+    image: serviceAirportImage,
+    alt: "Silver executive van with luggage outside a hotel, ready for an airport transfer",
+    icon: <Plane aria-hidden="true" />,
   },
   {
     number: "03",
-    title: "Airport transfers",
-    description: "A more considered connection to your next flight.",
-    image: executiveSedanImage,
-    alt: "Silver Toyota Axio for airport transfers in Kenya",
-    icon: <Plane aria-hidden="true" />,
+    title: "Short & long term rentals",
+    description: "A dedicated vehicle for schedules that have room to move.",
+    image: serviceRentalsImage,
+    alt: "Driver at the wheel of a rental car on a highway",
+    imagePosition: "85% 50%",
+    icon: <Clock3 aria-hidden="true" />,
   },
 ];
 
@@ -305,9 +308,10 @@ function NexusHome() {
                   <img
                     src={service.image}
                     alt={service.alt}
-                    width={512}
-                    height={1024}
+                    width={800}
+                    height={620}
                     loading="lazy"
+                    style={service.imagePosition ? { objectPosition: service.imagePosition } : undefined}
                   />
                   <span className="service-image-index">{service.number}</span>
                   <span className="service-image-arrow"><ArrowDownRight aria-hidden="true" /></span>

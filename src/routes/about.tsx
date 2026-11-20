@@ -32,14 +32,14 @@ const offerings = [
     description: "Considered journeys for meetings, teams, and the working day.",
   },
   {
-    icon: Clock3,
-    title: "Full-day hires",
-    description: "A dedicated vehicle for schedules that have room to move.",
-  },
-  {
     icon: Plane,
     title: "Airport transfers",
     description: "A more considered connection to your next flight.",
+  },
+  {
+    icon: Clock3,
+    title: "Short & long term rentals",
+    description: "A dedicated vehicle for schedules that have room to move.",
   },
 ];
 

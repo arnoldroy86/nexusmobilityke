@@ -26,7 +26,7 @@ export function SiteHeader() {
           aria-label="NEXUS home"
           onClick={closeMenu}
         >
-          <img src={logoSrc} alt="NEXUS" width={168} height={56} />
+          <img src={logoSrc} alt="NEXUS" width={150} height={61} />
         </Link>
 
         <Button
