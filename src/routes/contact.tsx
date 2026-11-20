@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   ADDRESS_LINES,
+  EMAIL,
   MAPS_URL,
   PHONE_DISPLAY,
   PHONE_TEL,
-  buildWhatsAppUrl,
   composeMessage,
   openWhatsApp,
 } from "@/lib/contact";
@@ -100,16 +100,14 @@ function ContactPage() {
                   <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
                 </div>
               </li>
+              <li>
+                <Mail aria-hidden="true" />
+                <div>
+                  <p className="contact-label">Email</p>
+                  <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+                </div>
+              </li>
             </ul>
-            <Button asChild className="button-primary" size="lg">
-              <a
-                href={buildWhatsAppUrl("Hello NEXUS, I’d like to make an enquiry.")}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MessageCircle aria-hidden="true" /> Chat on WhatsApp
-              </a>
-            </Button>
           </div>
 
           <form className="booking-form" onSubmit={sendToWhatsApp}>

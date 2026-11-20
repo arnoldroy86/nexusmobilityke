@@ -1,6 +1,7 @@
 export const WHATSAPP_NUMBER = "254740570038";
 export const PHONE_DISPLAY = "+254 740570038";
 export const PHONE_TEL = "+254740570038";
+export const EMAIL = "info@nexusmobilityhq.com";
 export const ADDRESS_LINES = ["Applewood Adams", "Kilimani, Nairobi"];
 export const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Applewood+Adams+Kilimani+Nairobi";

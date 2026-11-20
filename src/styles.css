@@ -883,8 +883,9 @@ img {
   bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 20px;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
   border-radius: 999px;
   background: var(--brand-orange);
   box-shadow: 0 8px 24px oklch(0 0 0 / 0.25);
@@ -902,8 +903,8 @@ img {
 }
 
 .whatsapp-float svg {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 
 .process-layout {
@@ -1519,6 +1520,7 @@ img {
 }
 
 .booking-form input,
+.booking-form select,
 .booking-textarea {
   width: 100%;
   min-height: 42px;
@@ -1531,6 +1533,21 @@ img {
 
 .booking-form input {
   padding-inline: 12px;
+}
+
+.booking-form select {
+  padding-inline: 10px;
+  cursor: pointer;
+}
+
+.phone-field {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: 8px;
+}
+
+.phone-country {
+  text-overflow: ellipsis;
 }
 
 .booking-form input::placeholder,
@@ -1670,8 +1687,6 @@ img {
   .showcase-heading h2 { font-size: 36px; }
   .subpage-hero h1 { font-size: 42px; }
   .about-grid h2, .about-heading h2 { font-size: 36px; }
-  .whatsapp-float span { display: none; }
-  .whatsapp-float { padding: 15px; }
   .site-container { width: calc(100% - 40px); }
   .page-section { padding-block: 70px; }
   .header-inner { min-height: 67px; gap: 14px; }

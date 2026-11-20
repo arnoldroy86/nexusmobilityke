@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowDownRight,
@@ -15,7 +15,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { PhoneField } from "@/components/phone-field";
 import { composeMessage, openWhatsApp } from "@/lib/contact";
+import { DIAL_CODES } from "@/lib/phone-data";
+import { toInternationalNumber } from "@/lib/phone";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { ShowcaseVideo } from "@/components/showcase-video";
@@ -62,6 +65,30 @@ export const Route = createFileRoute("/")({
   }),
   component: NexusHome,
 });
+
+const vehicleTypes = [
+  "Sedan",
+  "7-seater Van",
+  "Executive SUV",
+  "Executive Van",
+  "Premium SUV",
+  "Coaster Bus",
+];
+
+function todayLocal() {
+  const now = new Date();
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+function formatDate(value: string) {
+  if (!value) return "";
+  return new Date(`${value}T00:00:00`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 const services = [
   {
@@ -156,20 +183,38 @@ function NexusHome() {
   const [partnerSubmitting, setPartnerSubmitting] = useState(false);
   const [partnerMessage, setPartnerMessage] = useState("");
   const [enquiryMessage, setEnquiryMessage] = useState("");
+  const [today, setToday] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+
+  useEffect(() => {
+    setToday(todayLocal());
+  }, []);
 
   function sendEnquiryToWhatsApp(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const field = (name: string) => String(data.get(name) ?? "");
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const field = (name: string) => String(data.get(name) ?? "").trim();
+
+    const country = field("phone-country");
+    const phone = toInternationalNumber(DIAL_CODES[country] ?? "254", field("phone"));
+    if (!phone) {
+      setEnquiryMessage("Please enter a valid phone number that can receive WhatsApp messages.");
+      (form.elements.namedItem("phone") as HTMLInputElement | null)?.focus();
+      return;
+    }
 
     openWhatsApp(
-      composeMessage("Hello NEXUS, I’d like to make a journey enquiry.", [
-        ["Name", field("name")],
-        ["Email", field("email")],
-        ["Journey details", field("details")],
+      composeMessage("Hello NEXUS, I’d like to make a booking enquiry.", [
+        ["Full names", field("name")],
+        ["Phone (WhatsApp)", phone],
+        ["Vehicle type", field("vehicle-type")],
+        ["Pickup date", formatDate(field("pickup-date"))],
+        ["Drop-off date", formatDate(field("dropoff-date"))],
+        ["Pickup location", field("pickup-location")],
       ]),
     );
-    setEnquiryMessage("WhatsApp is opening with your enquiry. Press send there to reach the NEXUS team.");
+    setEnquiryMessage("WhatsApp is opening with your booking enquiry. Press send there to reach the NEXUS team.");
   }
 
   async function submitPartnerVehicle(event: React.FormEvent<HTMLFormElement>) {
@@ -280,10 +325,6 @@ function NexusHome() {
               height={1200}
               fetchPriority="high"
             />
-            <div className="hero-image-caption">
-              <span className="caption-marker" />
-              <span>Kenya’s roads, ready for what’s next</span>
-            </div>
             <span className="hero-image-index" aria-hidden="true">Nº 01 — NEXUS</span>
           </div>
         </div>
@@ -491,10 +532,10 @@ function NexusHome() {
         <div className="site-container booking-layout">
           <div className="booking-copy">
             <p className="eyebrow"><span /> Start a conversation</p>
-            <h2>Let’s make<br />your next journey <span>count.</span></h2>
+            <h2>Book your journey <span>today</span></h2>
             <p>
-              Share a little about what you have in mind. Your enquiry goes straight to
-              the NEXUS team on WhatsApp.
+              Tell us what you need and when. Your booking enquiry goes straight to the
+              NEXUS team on WhatsApp.
             </p>
             <div className="booking-assurance">
               <ShieldCheck aria-hidden="true" />
@@ -503,27 +544,43 @@ function NexusHome() {
           </div>
           <form className="booking-form" onSubmit={sendEnquiryToWhatsApp}>
             <div className="form-heading"><span>01 / 03</span><span>Your enquiry</span></div>
-            <label htmlFor="guest-name">Your name</label>
-            <Input id="guest-name" name="name" autoComplete="name" placeholder="Name" required />
-            <label htmlFor="guest-email">Email address</label>
-            <Input
-              id="guest-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              placeholder="you@example.com"
-              required
-            />
-            <label htmlFor="journey-details">What does your journey look like?</label>
-            <textarea
-              id="journey-details"
-              className="booking-textarea"
-              name="details"
-              rows={4}
-              placeholder="Share your service, route, or questions"
-            />
+            <label htmlFor="guest-name">Full names</label>
+            <Input id="guest-name" name="name" autoComplete="name" placeholder="Full names" required />
+            <label htmlFor="guest-phone">Phone number (WhatsApp)</label>
+            <PhoneField id="guest-phone" name="phone" />
+            <label htmlFor="vehicle-type">Vehicle type</label>
+            <select id="vehicle-type" name="vehicle-type" defaultValue="" required>
+              <option value="" disabled>
+                Select vehicle type
+              </option>
+              {vehicleTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            <div className="form-two-column">
+              <div className="form-field">
+                <label htmlFor="pickup-date">Pickup date</label>
+                <Input
+                  id="pickup-date"
+                  name="pickup-date"
+                  type="date"
+                  min={today}
+                  value={pickupDate}
+                  onChange={(event) => setPickupDate(event.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="dropoff-date">Drop-off date</label>
+                <Input id="dropoff-date" name="dropoff-date" type="date" min={pickupDate || today} required />
+              </div>
+            </div>
+            <label htmlFor="pickup-location">Pickup location</label>
+            <Input id="pickup-location" name="pickup-location" autoComplete="street-address" placeholder="e.g. JKIA, Westlands, Kilimani" required />
             <Button className="form-submit" type="submit" size="lg">
-              Send via WhatsApp <ArrowRight aria-hidden="true" />
+              Send Booking Enquiry <ArrowRight aria-hidden="true" />
             </Button>
             {enquiryMessage && (
               <p className="form-feedback" role="status">

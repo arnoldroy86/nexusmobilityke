@@ -13,7 +13,6 @@ export function WhatsAppButton() {
       aria-label="Chat with NEXUS on WhatsApp"
     >
       <MessageCircle aria-hidden="true" />
-      <span>WhatsApp us</span>
     </a>
   );
 }
