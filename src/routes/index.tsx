@@ -7,14 +7,15 @@ import {
   Clock3,
   FileImage,
   MapPin,
-  Menu,
   Plane,
   Route as RouteIcon,
   ShieldCheck,
-  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { composeMessage, openWhatsApp } from "@/lib/contact";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { ShowcaseVideo } from "@/components/showcase-video";
@@ -59,14 +60,6 @@ export const Route = createFileRoute("/")({
   }),
   component: NexusHome,
 });
-
-const navigation = [
-  { href: "#services", label: "Services" },
-  { href: "#vehicles", label: "Our fleet" },
-  { href: "#process", label: "How it works" },
-  { href: "#reviews", label: "Testimonials" },
-  { href: "#partners", label: "Partner with us" },
-];
 
 const services = [
   {
@@ -124,25 +117,21 @@ const steps = [
 
 const showcaseVideos = [
   {
-    title: "Coaster bus",
     src: "/videos/fleet-showcase-1.mp4",
     poster: "/videos/fleet-showcase-1.jpg",
     label: "Exterior walk-around of a NEXUS coaster bus",
   },
   {
-    title: "Alphard / Vellfire",
     src: "/videos/fleet-showcase-2.mp4",
     poster: "/videos/fleet-showcase-2.jpg",
     label: "Toyota Alphard and Vellfire executive vans in the NEXUS fleet",
   },
   {
-    title: "Land Cruiser Prado",
     src: "/videos/fleet-showcase-3.mp4",
     poster: "/videos/fleet-showcase-3.jpg",
     label: "A black Toyota Land Cruiser Prado from the NEXUS fleet",
   },
   {
-    title: "Coaster interior",
     src: "/videos/fleet-showcase-4.mp4",
     poster: "/videos/fleet-showcase-4.jpg",
     label: "Passenger seating inside a NEXUS coaster bus",
@@ -161,17 +150,23 @@ const clientLogos = [
 ];
 
 function NexusHome() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [partnerSubmitting, setPartnerSubmitting] = useState(false);
   const [partnerMessage, setPartnerMessage] = useState("");
+  const [enquiryMessage, setEnquiryMessage] = useState("");
 
-  function closeMenu() {
-    setMenuOpen(false);
-  }
-
-  function showEnquiryPreview(event: React.FormEvent<HTMLFormElement>) {
+  function sendEnquiryToWhatsApp(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPartnerMessage("Thanks for your interest. Booking enquiries are not sent from this form yet.");
+    const data = new FormData(event.currentTarget);
+    const field = (name: string) => String(data.get(name) ?? "");
+
+    openWhatsApp(
+      composeMessage("Hello NEXUS, I’d like to make a journey enquiry.", [
+        ["Name", field("name")],
+        ["Email", field("email")],
+        ["Journey details", field("details")],
+      ]),
+    );
+    setEnquiryMessage("WhatsApp is opening with your enquiry. Press send there to reach the NEXUS team.");
   }
 
   async function submitPartnerVehicle(event: React.FormEvent<HTMLFormElement>) {
@@ -179,6 +174,7 @@ function NexusHome() {
     const form = event.currentTarget;
     const formData = new FormData(form);
     const photo = formData.get("vehicle-photo");
+    const field = (name: string) => String(formData.get(name) ?? "").trim();
 
     if (!(photo instanceof File) || photo.size === 0) {
       setPartnerMessage("Please choose a vehicle photo to continue.");
@@ -193,6 +189,9 @@ function NexusHome() {
     setPartnerSubmitting(true);
     setPartnerMessage("");
 
+    // The photo and details are still saved to NEXUS's database as a record.
+    // A failure here must not stop the enquiry from reaching WhatsApp.
+    let photoSaved = false;
     const extension = photo.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
     const photoPath = `${crypto.randomUUID()}.${extension}`;
 
@@ -203,67 +202,48 @@ function NexusHome() {
 
       if (uploadError) throw uploadError;
 
-      const vehicleYearValue = String(formData.get("vehicle-year") ?? "").trim();
+      const vehicleYearValue = field("vehicle-year");
       const { error: submitError } = await supabase.from("partner_vehicle_submissions").insert({
-        full_name: String(formData.get("partner-name") ?? "").trim(),
-        email: String(formData.get("partner-email") ?? "").trim(),
-        phone: String(formData.get("partner-phone") ?? "").trim(),
-        vehicle_make: String(formData.get("vehicle-make") ?? "").trim(),
-        vehicle_model: String(formData.get("vehicle-model") ?? "").trim(),
+        full_name: field("partner-name"),
+        email: field("partner-email"),
+        phone: field("partner-phone"),
+        vehicle_make: field("vehicle-make"),
+        vehicle_model: field("vehicle-model"),
         vehicle_year: vehicleYearValue ? Number(vehicleYearValue) : null,
-        notes: String(formData.get("vehicle-notes") ?? "").trim() || null,
+        notes: field("vehicle-notes") || null,
         photo_storage_path: photoPath,
       });
 
       if (submitError) throw submitError;
-
-      form.reset();
-      setPartnerMessage("Your vehicle details have been sent to NEXUS. Thank you for partnering with us.");
+      photoSaved = true;
     } catch {
-      setPartnerMessage("We couldn’t send your details just now. Please try again in a moment.");
-    } finally {
-      setPartnerSubmitting(false);
+      photoSaved = false;
     }
+
+    openWhatsApp(
+      composeMessage("Hello NEXUS, I’d like to partner with my vehicle.", [
+        ["Name", field("partner-name")],
+        ["Phone", field("partner-phone")],
+        ["Email", field("partner-email")],
+        ["Vehicle", `${field("vehicle-make")} ${field("vehicle-model")}`],
+        ["Year", field("vehicle-year")],
+        ["Notes", field("vehicle-notes")],
+        ["Photo", photoSaved ? "Uploaded with this enquiry" : "I will send it in this chat"],
+      ]),
+    );
+
+    form.reset();
+    setPartnerMessage(
+      photoSaved
+        ? "Your photo was uploaded and WhatsApp is opening with your details. Press send there to reach the NEXUS team."
+        : "WhatsApp is opening with your details. Please attach your vehicle photo in the chat.",
+    );
+    setPartnerSubmitting(false);
   }
 
   return (
     <main>
-      <header className="nexus-header">
-        <div className="site-container header-inner">
-          <a className="brand-lockup" href="#home" aria-label="NEXUS home" onClick={closeMenu}>
-            <img src={logoSrc} alt="NEXUS" width={168} height={56} />
-          </a>
-
-          <Button
-            className="menu-toggle"
-            variant="ghost"
-            size="icon"
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={menuOpen}
-            aria-controls="primary-navigation"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-          </Button>
-
-          <nav
-            id="primary-navigation"
-            className={`header-navigation${menuOpen ? " is-open" : ""}`}
-            aria-label="Main navigation"
-          >
-            {navigation.map(({ href, label }) => (
-              <a key={href} href={href} onClick={closeMenu}>
-                {label}
-              </a>
-            ))}
-            <Button asChild className="header-cta" variant="default" size="sm">
-              <a href="#booking" onClick={closeMenu}>
-                Book a ride <ArrowRight aria-hidden="true" />
-              </a>
-            </Button>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section id="home" className="hero-section">
         <div className="site-container hero-layout">
@@ -388,13 +368,7 @@ function NexusHome() {
       <section id="showcase" className="showcase-section page-section" aria-labelledby="showcase-heading">
         <div className="site-container">
           <div className="section-heading showcase-heading">
-            <div>
-              <p className="eyebrow eyebrow-light"><span /> Fleet showcase</p>
-              <h2 id="showcase-heading">See the fleet<br /><span>in motion.</span></h2>
-            </div>
-            <p className="section-aside">
-              A closer look at the vehicles waiting for you, inside and out.
-            </p>
+            <h2 id="showcase-heading">Fleet <span>Showcase</span></h2>
           </div>
 
           <div className="showcase-grid">
@@ -403,7 +377,6 @@ function NexusHome() {
                 <div className="showcase-frame">
                   <ShowcaseVideo src={video.src} poster={video.poster} label={video.label} />
                 </div>
-                <figcaption>{video.title}</figcaption>
               </figure>
             ))}
           </div>
@@ -516,15 +489,15 @@ function NexusHome() {
             <p className="eyebrow"><span /> Start a conversation</p>
             <h2>Let’s make<br />your next journey <span>count.</span></h2>
             <p>
-              Share a little about what you have in mind. This enquiry form is a
-              preview and does not yet send your details.
+              Share a little about what you have in mind. Your enquiry goes straight to
+              the NEXUS team on WhatsApp.
             </p>
             <div className="booking-assurance">
               <ShieldCheck aria-hidden="true" />
-              <span>This enquiry form is a preview and does not submit your booking request.</span>
+              <span>Sending opens WhatsApp with your enquiry ready to send to NEXUS.</span>
             </div>
           </div>
-          <form className="booking-form" onSubmit={showEnquiryPreview}>
+          <form className="booking-form" onSubmit={sendEnquiryToWhatsApp}>
             <div className="form-heading"><span>01 / 03</span><span>Your enquiry</span></div>
             <label htmlFor="guest-name">Your name</label>
             <Input id="guest-name" name="name" autoComplete="name" placeholder="Name" required />
@@ -546,14 +519,14 @@ function NexusHome() {
               placeholder="Share your service, route, or questions"
             />
             <Button className="form-submit" type="submit" size="lg">
-              Preview my enquiry <ArrowRight aria-hidden="true" />
+              Send via WhatsApp <ArrowRight aria-hidden="true" />
             </Button>
-            {partnerMessage && (
+            {enquiryMessage && (
               <p className="form-feedback" role="status">
-                {partnerMessage}
+                {enquiryMessage}
               </p>
             )}
-            <p className="form-privacy">Your details are not sent when you preview this form.</p>
+            <p className="form-privacy">Your enquiry is sent when you press send in WhatsApp.</p>
           </form>
         </div>
       </section>
@@ -619,41 +592,14 @@ function NexusHome() {
             <label htmlFor="vehicle-notes">Anything else we should know?</label>
             <textarea id="vehicle-notes" className="booking-textarea" name="vehicle-notes" rows={3} placeholder="Vehicle condition, availability, or questions" />
             <Button className="form-submit" type="submit" size="lg" disabled={partnerSubmitting}>
-              {partnerSubmitting ? "Sending details…" : "Send partner enquiry"} <ArrowRight aria-hidden="true" />
+              {partnerSubmitting ? "Sending details…" : "Send via WhatsApp"} <ArrowRight aria-hidden="true" />
             </Button>
             {partnerMessage && <p className="form-feedback" role="status">{partnerMessage}</p>}
           </form>
         </div>
       </section>
 
-      <footer className="nexus-footer">
-        <div className="site-container footer-main">
-          <div className="footer-brand">
-            <a className="brand-lockup" href="#home" aria-label="NEXUS home">
-              <img src={logoSrc} alt="NEXUS" width={160} height={54} loading="lazy" />
-            </a>
-          </div>
-          <div className="footer-column">
-            <p className="footer-label">Explore</p>
-            <a href="#services">Our services</a>
-            <a href="#vehicles">Our fleet</a>
-            <a href="#process">How it works</a>
-          </div>
-          <div className="footer-column">
-            <p className="footer-label">Connect</p>
-            <a href="#booking">Enquire about a journey</a>
-            <a href="#partners">Partner with us</a>
-            <a href="#app">NEXUS app</a>
-          </div>
-          <div className="footer-column footer-legal">
-            <p className="footer-label">Nairobi</p>
-            <span>Tsavo Suits<br />Ngong Rd, Nairobi, Kenya</span>
-          </div>
-        </div>
-        <div className="site-container footer-bottom">
-          <span>© 2026 NEXUS. All rights reserved.</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

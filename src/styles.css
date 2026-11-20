@@ -710,10 +710,6 @@ img {
   color: var(--brand-orange);
 }
 
-.showcase-section .section-aside {
-  color: oklch(0.77 0.008 70);
-}
-
 .showcase-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -739,11 +735,175 @@ img {
   object-fit: cover;
 }
 
-.showcase-item figcaption {
-  margin-top: 14px;
+.subpage-hero {
+  padding-block: 84px 76px;
+  background: var(--brand-black);
+  color: oklch(0.98 0.002 70);
+}
+
+.subpage-hero h1 {
+  margin: 0;
+  color: oklch(0.98 0.002 70);
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 56px;
+  line-height: 1.1;
+}
+
+.subpage-hero h1 span {
+  color: var(--brand-orange);
+}
+
+.subpage-lead {
+  max-width: 620px;
+  margin: 22px 0 0;
+  color: oklch(0.77 0.008 70);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.contact-list {
+  display: grid;
+  margin: 32px 0;
+  padding: 0;
+  gap: 22px;
+  list-style: none;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.contact-list svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  flex: none;
+  color: var(--brand-orange-dark);
+}
+
+.contact-list a {
+  color: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  text-decoration: underline;
+}
+
+.contact-label {
+  margin: 0 0 4px;
+  font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.about-section {
+  padding-block: 96px;
+}
+
+.about-section-alt {
+  background: var(--brand-warm);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.94fr 1.06fr;
+  align-items: start;
+  gap: 85px;
+}
+
+.about-grid h2,
+.about-heading h2 {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.25;
+}
+
+.about-grid h2 span,
+.about-heading h2 span {
+  color: var(--brand-orange-dark);
+}
+
+.about-copy p {
+  margin: 0 0 20px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  gap: 14px;
+}
+
+.about-heading {
+  margin-bottom: 40px;
+}
+
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.about-card {
+  padding: 32px 28px;
+  background: var(--background);
+}
+
+.about-card svg {
+  width: 28px;
+  height: 28px;
+  color: var(--brand-orange-dark);
+}
+
+.about-card h3 {
+  margin: 18px 0 8px;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.about-card p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.whatsapp-float {
+  position: fixed;
+  z-index: 30;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 999px;
+  background: var(--brand-orange);
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.25);
+  color: var(--brand-black);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.whatsapp-float:hover {
+  background: color-mix(in oklab, var(--brand-orange) 83%, white);
+  transform: translateY(-2px);
+}
+
+.whatsapp-float svg {
+  width: 24px;
+  height: 24px;
 }
 
 .process-layout {
@@ -1491,6 +1651,8 @@ img {
 
 @media (max-width: 1020px) {
   .showcase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .about-cards { grid-template-columns: 1fr; }
   .site-container { width: calc(100% - 72px); }
   .hero-layout { min-height: 535px; gap: 32px; }
   .hero-copy h1 { font-size: 54px; }
@@ -1506,6 +1668,10 @@ img {
 @media (max-width: 720px) {
   .showcase-grid { gap: 12px; }
   .showcase-heading h2 { font-size: 36px; }
+  .subpage-hero h1 { font-size: 42px; }
+  .about-grid h2, .about-heading h2 { font-size: 36px; }
+  .whatsapp-float span { display: none; }
+  .whatsapp-float { padding: 15px; }
   .site-container { width: calc(100% - 40px); }
   .page-section { padding-block: 70px; }
   .header-inner { min-height: 67px; gap: 14px; }
